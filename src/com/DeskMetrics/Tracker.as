@@ -45,11 +45,15 @@ package com.DeskMetrics
 			}
 		}
 		
-		private function trackButton(b:Button,stageName:String="",appName:String=""):void
+		private function trackButton(b:Button,stageName:String="<default>",appName:String="<default>"):void
 		{
+			var app:App = Tracker.timeline.getApp(appName);
+			
+			//app.addButton(b.id);
+			
 			b.addEventListener(MouseEvent.CLICK,
 			function():void{ 				
-				
+				timeline.addButtonClick(b.id,app); //app == null
 				if (Tracker.debug)
 					Alert.show("I'm being tracked by DeskMetrics Tracker!"); 
 			});

@@ -21,42 +21,25 @@ package com.DeskMetrics
 				return;
 
 			var app:App = new App();
-			app.name = appName;
+			app.name = appName==""?"<default>":appName;
 			appList[appName] = app;
 		}
 		
-		//public function addButtonClick(
+		public function addButtonClick(name:String,app:App):void
+		{
+			var ev:EventVO = new EventVO();
+			var d: Date = new Date();
+			
+			ev.app = app;
+			ev.timestamp = Math.round((d.getTime() - d.getTimezoneOffset())/1000) as uint; //vindo como 0
+			ev.type = Events.BUTTON_CLICK;
+			eventList.addItem(ev);
+		}
 		
 		public function getApp(appName:String):App
 		{
 			return appList[appName] as App;
 		}
-		
-		
-	}
-	
-	internal class App
-	{
-		public var name:string;
-		private var buttons:Object;
-		private var timestamp:uint;
-		
-		public function App()
-		{
-			var now:Date = new Date();
-			timestamp = ((now.time - now.timezoneOffset)/1000) as uint;
-			buttons = new Object();
-			
-		}
-		
-		public function addButton(name:String)
-		{
-			
-		}
-	}
-	
-	internal class Button
-	{
 		
 	}
 	

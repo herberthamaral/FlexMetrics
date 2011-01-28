@@ -2,9 +2,6 @@ package com.DeskMetrics
 {
 	internal class Events
 	{
-		public function Events()
-		{
-		}
-
+		public static  var BUTTON_CLICK:String = "BUTTON_CLICK";
 	}
 }
