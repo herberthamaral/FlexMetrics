@@ -10,6 +10,7 @@ package com.DeskMetrics
 	{
 		private static var tracker:Tracker;
 		private static var service:Service;
+		private static var timeline:EventTimeline;
 		
 		public static var debug:Boolean;
 		
@@ -20,7 +21,12 @@ package com.DeskMetrics
 			
 			if(service == null)
 				service = new Service();
-				
+			
+			if (timeline == null)
+				timeline = new EventTimeline();
+			
+			timeline.addApp(app["name"] as String);
+			
 			var description:XML = describeType(app);
 			var list:XMLList = description.child("accessor");		
 			var t:String;
@@ -28,6 +34,8 @@ package com.DeskMetrics
 			for (var i:int;i<list.length();i++)
 			{
 				var s:String = list[i].@name;
+				
+				//try to coerce to a button
 				try
 				{
 					var btn:Button = app[s] as Button;
@@ -37,10 +45,11 @@ package com.DeskMetrics
 			}
 		}
 		
-		private function trackButton(b:Button):void
+		private function trackButton(b:Button,stageName:String="",appName:String=""):void
 		{
 			b.addEventListener(MouseEvent.CLICK,
-			function():void{ 
+			function():void{ 				
+				
 				if (Tracker.debug)
 					Alert.show("I'm being tracked by DeskMetrics Tracker!"); 
 			});
