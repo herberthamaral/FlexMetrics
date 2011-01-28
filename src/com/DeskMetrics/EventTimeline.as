@@ -25,6 +25,8 @@ package com.DeskMetrics
 			appList[appName] = app;
 		}
 		
+		//public function addButtonClick(
+		
 		public function getApp(appName:String):App
 		{
 			return appList[appName] as App;
