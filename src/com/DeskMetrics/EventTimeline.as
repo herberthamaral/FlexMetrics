@@ -23,6 +23,17 @@ package com.DeskMetrics
 			var app:App = new App();
 			app.setApplication(application);
 			appList[application.name] = app;
+			
+			var d:Date = new Date();
+			
+			var ev:EventVO = new EventVO();
+			ev.app = app;
+			ev.objName = application.name;
+			ev.state = application.currentState;
+			
+			ev.timestamp = Math.round((d.getTime() - d.getTimezoneOffset())/1000) as uint;
+			ev.type = Events.APP_START;
+			eventList.addItem(ev);
 		}
 		
 		public function addButtonClick(name:String,app:App):void
@@ -31,6 +42,8 @@ package com.DeskMetrics
 			var d: Date = new Date();
 			
 			ev.app = app;
+			ev.objName = name;
+			ev.state = app.getApplication().currentState;
 			ev.timestamp = Math.round((d.getTime() - d.getTimezoneOffset())/1000) as uint;
 			ev.type = Events.BUTTON_CLICK;
 			eventList.addItem(ev);

@@ -6,5 +6,7 @@ package com.DeskMetrics
 		public var type:String;
 		public var timestamp:uint;
 		public var app:App;
+		public var state:String;
+		public var objName:String;
 	}
 }

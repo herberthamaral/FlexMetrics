@@ -7,6 +7,7 @@ package com.DeskMetrics
 	import mx.controls.Button;
 	import mx.core.Application;
 	import mx.events.ChildExistenceChangedEvent;
+	import mx.events.StateChangeEvent;
 	
 	internal class App
 	{
@@ -19,7 +20,8 @@ package com.DeskMetrics
 			if (application ==null)
 				application = app;
 			
-			app.addEventListener(ChildExistenceChangedEvent.CHILD_ADD,applicationStateChangeHandler);		
+			//app.addEventListener(ChildExistenceChangedEvent.CHILD_ADD,applicationStateChangeHandler);
+			app.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,applicationStateChangeHandler);
 		}
 		
 		public function getApplication():Application
@@ -46,12 +48,12 @@ package com.DeskMetrics
 		private function buttonClickEventHandler(e:MouseEvent):void
 		{
 			var app:App = Tracker.appsByButtons[e.target] as App;
-			Tracker.timeline.addButtonClick(e.target["id"] as String,app); //app == null
+			Tracker.timeline.addButtonClick(e.target["id"] as String,app); 
 				if (Tracker.debug)
 					Alert.show("I'm '"+app.application.name+"\\"+(e.target["id"] as String)+"' and I'm being tracked by DeskMetrics Tracker!");
 		}
 		
-		private function applicationStateChangeHandler(e:ChildExistenceChangedEvent):void
+		private function applicationStateChangeHandler(e:StateChangeEvent):void
 		{
 			//look for another buttons that may come in and report an state change event
 			var description:XML = describeType(this.application);
