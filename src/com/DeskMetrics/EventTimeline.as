@@ -1,7 +1,7 @@
 package com.DeskMetrics
 {
 	import mx.collections.ArrayCollection;
-	
+	import mx.core.Application;
 	
 	internal class EventTimeline
 	{
@@ -15,14 +15,14 @@ package com.DeskMetrics
 			eventList = new ArrayCollection();
 		}
 		
-		public function addApp(appName:String):void
+		public function addApp(application:Application):void
 		{
-			if (appList[appName] !=null)
+			if (appList[application.name] !=null)
 				return;
 
 			var app:App = new App();
-			app.name = appName==""?"<default>":appName;
-			appList[appName] = app;
+			app.application = application;
+			appList[application.name] = app;
 		}
 		
 		public function addButtonClick(name:String,app:App):void
@@ -31,7 +31,7 @@ package com.DeskMetrics
 			var d: Date = new Date();
 			
 			ev.app = app;
-			ev.timestamp = Math.round((d.getTime() - d.getTimezoneOffset())/1000) as uint; //vindo como 0
+			ev.timestamp = Math.round((d.getTime() - d.getTimezoneOffset())/1000) as uint;
 			ev.type = Events.BUTTON_CLICK;
 			eventList.addItem(ev);
 		}

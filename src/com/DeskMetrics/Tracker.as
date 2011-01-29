@@ -3,14 +3,18 @@ package com.DeskMetrics
 	import flash.events.*;
 	import flash.utils.describeType;
 	
-	import mx.controls.Alert;
 	import mx.controls.Button;
+	import mx.core.Application;
 
 	public class Tracker
 	{
-		private static var tracker:Tracker;
-		private static var service:Service;
-		private static var timeline:EventTimeline;
+		static var tracker:Tracker;
+		static var service:Service;
+		static var timeline:EventTimeline;
+		
+		// hash object which has button objects as keys and applications as
+		// values
+		static var appsByButtons:Object;  
 		
 		public static var debug:Boolean;
 		
@@ -25,38 +29,36 @@ package com.DeskMetrics
 			if (timeline == null)
 				timeline = new EventTimeline();
 			
-			timeline.addApp(app["name"] as String);
+			if (appsByButtons == null)
+				appsByButtons = new Object();
+			
+			timeline.addApp(app as Application);
 			
 			var description:XML = describeType(app);
 			var list:XMLList = description.child("accessor");		
 			var t:String;
+			var application:Application = app as Application;
 			
 			for (var i:int;i<list.length();i++)
 			{
 				var s:String = list[i].@name;
 				
-				//try to coerce to a button
 				try
 				{
 					var btn:Button = app[s] as Button;
 					t = btn.label;
-					tracker.trackButton(btn);
-				}catch(e){}
+					tracker.trackButton(btn,application);
+				}
+				catch(e:TypeError){}
+				catch(e:ReferenceError){}
 			}
 		}
 		
-		private function trackButton(b:Button,stageName:String="<default>",appName:String="<default>"):void
+		private function trackButton(b:Button,application:Application):void
 		{
-			var app:App = Tracker.timeline.getApp(appName);
-			
-			//app.addButton(b.id);
-			
-			b.addEventListener(MouseEvent.CLICK,
-			function():void{ 				
-				timeline.addButtonClick(b.id,app); //app == null
-				if (Tracker.debug)
-					Alert.show("I'm being tracked by DeskMetrics Tracker!"); 
-			});
+			var app:App = Tracker.timeline.getApp(application.name);
+			appsByButtons[b] = app;
+			app.addButton(b);
 		} 
 	}
 }
