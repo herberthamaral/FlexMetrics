@@ -21,7 +21,7 @@ package com.DeskMetrics
 				return;
 
 			var app:App = new App();
-			app.application = application;
+			app.setApplication(application);
 			appList[application.name] = app;
 		}
 		

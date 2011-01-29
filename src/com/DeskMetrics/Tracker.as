@@ -5,10 +5,10 @@ package com.DeskMetrics
 	
 	import mx.controls.Button;
 	import mx.core.Application;
+	import mx.events.StateChangeEvent;
 
 	public class Tracker
 	{
-		static var tracker:Tracker;
 		static var service:Service;
 		static var timeline:EventTimeline;
 		
@@ -20,9 +20,6 @@ package com.DeskMetrics
 		
 		public static function track(app:Object):void
 		{
-			if (tracker == null)
-				tracker = new Tracker();
-			
 			if(service == null)
 				service = new Service();
 			
@@ -46,15 +43,17 @@ package com.DeskMetrics
 				try
 				{
 					var btn:Button = app[s] as Button;
+					
+					//make sure this is a button ;)
 					t = btn.label;
-					tracker.trackButton(btn,application);
+					Tracker.trackButton(btn,application);
 				}
 				catch(e:TypeError){}
 				catch(e:ReferenceError){}
 			}
 		}
 		
-		private function trackButton(b:Button,application:Application):void
+		public static function trackButton(b:Button,application:Application):void
 		{
 			var app:App = Tracker.timeline.getApp(application.name);
 			appsByButtons[b] = app;
