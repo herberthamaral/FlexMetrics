@@ -6,6 +6,7 @@ package com.DeskMetrics
 	import mx.controls.Alert;
 	import mx.controls.Button;
 	import mx.core.Application;
+	import mx.events.FlexEvent;
 	import mx.events.ModuleEvent;
 	import mx.events.StateChangeEvent;
 	import mx.modules.Module;
@@ -17,6 +18,7 @@ package com.DeskMetrics
 		private var timestamp:uint;
 		private var application:Application;
 		private var moduleLoaders:Object;
+		private var modules:Object;
 		
 		public function App()
 		{
@@ -24,6 +26,7 @@ package com.DeskMetrics
 			timestamp = Math.round(((now.time - now.timezoneOffset)/1000)) as uint;
 			buttons = new Object();
 			moduleLoaders = new Object();
+			modules = new Object();
 		}
 		
 		public function setApplication(app:Application):void
@@ -81,9 +84,45 @@ package com.DeskMetrics
 			}
 		}
 		
-		public function moduleLoadEventHandler(e:ModuleEvent):void
+		private function moduleLoadEventHandler(e:ModuleEvent):void
 		{
-			var moduleName:String  = ((e.target as ModuleLoader).child as Module).name;
+			var module:Module = (e.target as ModuleLoader).child as Module;
+			
+			
+			if (modules[module.id] == null)
+			{
+				//Tracker.timeline.addModuleLoaded(module.name,this);
+				modules[module.id] = module;
+				module.addEventListener(FlexEvent.INITIALIZE,moduleInitEventHandler);
+			}
+			
+		}
+		
+		private function moduleInitEventHandler(e:FlexEvent):void
+		{
+			var module:Module = e.target as Module;
+			var name:String = module.name;
+			
+			var description:XML = describeType(module);
+			var list:XMLList = description.child("accessor");
+			var t:String;
+			var app:Application = this.application;
+			for (var i:int;i<list.length();i++)
+			{
+				var s:String = list[i].@name;
+				try
+				{
+					var btn:Button = module[s] as Button;
+					//make sure this is a button ;)
+					t = btn.label;
+					Tracker.trackButton(btn,application);
+				}
+				catch(e:TypeError){}
+				catch(e:ReferenceError){}
+			}
+			
+			if(Tracker.debug)
+				Alert.show("Hi, I'm a module named "+module.name+".");
 		}
 		
 		public function moduleUnloadEventHandler(e:ModuleEvent):void

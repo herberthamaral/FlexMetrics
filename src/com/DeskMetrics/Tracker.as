@@ -36,7 +36,6 @@ package com.DeskMetrics
 			var t:String;
 			var application:Application = app as Application;
 			
-			trace(description);
 			for (var i:int;i<list.length();i++)
 			{
 				var s:String = list[i].@name;
