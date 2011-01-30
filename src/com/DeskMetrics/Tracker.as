@@ -36,6 +36,7 @@ package com.DeskMetrics
 			var t:String;
 			var application:Application = app as Application;
 			
+			trace(description);
 			for (var i:int;i<list.length();i++)
 			{
 				var s:String = list[i].@name;
@@ -58,6 +59,6 @@ package com.DeskMetrics
 			var app:App = Tracker.timeline.getApp(application.name);
 			appsByButtons[b] = app;
 			app.addButton(b);
-		} 
+		}
 	}
 }
