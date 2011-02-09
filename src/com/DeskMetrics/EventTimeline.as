@@ -1,7 +1,9 @@
 package com.DeskMetrics
 {
 	import mx.collections.ArrayCollection;
+	import mx.controls.Alert;
 	import mx.core.Application;
+	import mx.events.FlexEvent;
 	
 	internal class EventTimeline
 	{
@@ -24,16 +26,11 @@ package com.DeskMetrics
 			app.setApplication(application);
 			appList[application.name] = app;
 			
-			var d:Date = new Date();
-			
-			var ev:EventVO = new EventVO();
-			ev.app = app;
-			ev.objName = application.name;
-			ev.state = application.currentState;
-			
-			ev.timestamp = Math.round((d.getTime() - d.getTimezoneOffset())/1000) as uint;
-			ev.type = Events.APP_START;
-			eventList.addItem(ev);
+			Tracker.service.startApp(app);
+			application.addEventListener(FlexEvent.APPLICATION_COMPLETE,
+				function():void{ 
+					Alert.show("Finishing app");
+				});
 		}
 		
 		public function addButtonClick(name:String,app:App):void

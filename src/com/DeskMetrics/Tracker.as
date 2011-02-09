@@ -1,11 +1,11 @@
 package com.DeskMetrics
 {
 	import flash.events.*;
+	import flash.system.Capabilities;
 	import flash.utils.describeType;
 	
 	import mx.controls.Button;
 	import mx.core.Application;
-	import mx.events.StateChangeEvent;
 
 	public class Tracker
 	{
@@ -35,6 +35,8 @@ package com.DeskMetrics
 			var list:XMLList = description.child("accessor");		
 			var t:String;
 			var application:Application = app as Application;
+			
+			var a:Object  = Capabilities; 
 			
 			for (var i:int;i<list.length();i++)
 			{
