@@ -1,5 +1,8 @@
 package com.DeskMetrics
 {
+	import flash.net.SharedObject;
+	import flash.system.Capabilities;
+	
 	import mx.controls.Alert;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
@@ -7,6 +10,8 @@ package com.DeskMetrics
 	
 	internal class Service
 	{
+		private static var langs:Object = {"cs":"1029", "da":"1030", "nl":"1043","en":"1033","fi":"1035","fr":"1036","de":"1031","hu":"1038","it":"1040","ja":"1041","ko":"1042","no":"1044","xu":"0","pl":"1045","pt":"1046","ru":"1049","zh-CN":"2052","es":"1034","sv":"1053","zh-TW":"1028","tr":"1055"};;
+		
 		private var hash:String;
 		public function Service()
 		{
@@ -21,18 +26,18 @@ package com.DeskMetrics
 			
 			var json:String = '{' + 
 						'"tp":"startApp",' + 
-						'"aver":"0.1",' + 
-						'"ID":"827CCB0EEA8A706C4C34A16891F84E7B",' + 
+						'"aver":"'+app.version+'",' + 
+						'"ID":"'+this.getUserID()+'",' + 
 						'"ss":"'+hash.toUpperCase()+'",' + 
 						'"ts":'+ts.toString()+',' + 
-						'"osv":"Windows XP",' + 
+						'"osv":"'+Capabilities.os+'",' + 
 						'"ossp":null,' + 
 						'"osar":null,' + 
 						'"osjv":null,' + 
 						'"osnet":null,' + 
 						'"osnsp":null,' + 
-						'"oslng":1046,' + 
-						'"osscn":"1024x768",' + 
+						'"oslng":"'+langs[Capabilities.language]+'",' + 
+						'"osscn":"'+Capabilities.screenResolutionX+'x'+Capabilities.screenResolutionY+'",' + 
 						'"cnm":null,' + 
 						'"cbr":null,' + 
 						'"cfr":null,' + 
@@ -44,7 +49,7 @@ package com.DeskMetrics
 						'"dfr":null' + 
 					'}';
 
-			sendJson(json);
+			sendJson(json,app);
 		}
 		
 		public function finalizeApp(app:App):void
@@ -52,14 +57,14 @@ package com.DeskMetrics
 			
 		}
 		
-		private function sendJson(json:String):void
+		private function sendJson(json:String,app:App):void
 		{
 			var http:HTTPService = new HTTPService();
 			http.contentType = "text/javascript";
 			http.method = "POST";
 			http.resultFormat ="text";
 			http.request = json;
-			http.url = "http://4d47c012d9340b116a000000.api.deskmetrics.com/sendData";
+			http.url = "http://"+app.id.toLowerCase()+".api.deskmetrics.com/sendData";
 			http.addEventListener(ResultEvent.RESULT,
 				function(e:ResultEvent):void
 				{  
@@ -80,11 +85,19 @@ package com.DeskMetrics
 			http.send();
 		}
 		
+		private function getUserID():String
+		{
+			var obj:SharedObject = SharedObject.getLocal("ID");
+			if (obj.size == 0)
+				obj.data.ID = MD5.hash((new Date().getTime()).toString());
+			
+			return obj.data.ID;
+		}
+		
 		public function getSystemInfo():void
 		{
 			
 		}
-		
 		
 	}
 }

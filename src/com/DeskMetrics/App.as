@@ -19,6 +19,8 @@ package com.DeskMetrics
 		private var application:Application;
 		private var moduleLoaders:Object;
 		private var modules:Object;
+		var id:String;
+		var version:String;
 		
 		public function App()
 		{

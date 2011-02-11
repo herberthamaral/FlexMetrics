@@ -1,5 +1,7 @@
 package com.DeskMetrics
 {
+	import flash.external.ExternalInterface;
+	
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
 	import mx.core.Application;
@@ -17,14 +19,23 @@ package com.DeskMetrics
 			eventList = new ArrayCollection();
 		}
 		
-		public function addApp(application:Application):void
+		public function addApp(application:Application,appID:String,appVersion:String):void
 		{
 			if (appList[application.name] !=null)
 				return;
 
 			var app:App = new App();
 			app.setApplication(application);
+			app.version = appVersion;
+			app.id = appID;
+			
 			appList[application.name] = app;
+			
+			ExternalInterface.addCallback("finish",
+				function():void
+				{ 
+					Alert.show("bye!"); 
+				});
 			
 			Tracker.service.startApp(app);
 			application.addEventListener(FlexEvent.APPLICATION_COMPLETE,

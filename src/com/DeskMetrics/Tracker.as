@@ -18,7 +18,7 @@ package com.DeskMetrics
 		
 		public static var debug:Boolean;
 		
-		public static function track(app:Object):void
+		public static function track(app:Object,appID:String,appVersion:String):void
 		{
 			if(service == null)
 				service = new Service();
@@ -29,7 +29,7 @@ package com.DeskMetrics
 			if (appsByButtons == null)
 				appsByButtons = new Object();
 			
-			timeline.addApp(app as Application);
+			timeline.addApp(app as Application,appID,appVersion);
 			
 			var description:XML = describeType(app);
 			var list:XMLList = description.child("accessor");		
