@@ -3,6 +3,7 @@ package com.DeskMetrics
 	import flash.net.SharedObject;
 	import flash.system.Capabilities;
 	
+	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
@@ -52,9 +53,36 @@ package com.DeskMetrics
 			sendJson(json,app);
 		}
 		
+		function sendEventData(e:EventVO,app:App):void
+		{
+			sendJson(getJsonFromEvent(e),app);
+		}
+		
+		private function getJsonFromEvent(event:EventVO):String
+		{
+			return '{"tp":"ev",' + 
+					'"ca":"'+event.type+'",' + 
+					'"nm":"'+event.objName+'",' + 
+					'"ss":"'+this.hash+'",' + 
+					'"fl":1}';
+		}
+		
 		public function finalizeApp(app:App):void
 		{
+			var d: Date = new Date()
+			var ts:uint = Math.round((d.getTime() - d.getTimezoneOffset())/1000) as uint;
+			var json:String  = '{"tp":"stApp",' + 
+					'"ts":"'+ts.toString()+'",' + 
+					'"ss":"'+hash.toUpperCase()+'"}';
 			
+			var i:int = 0;
+			var list:ArrayCollection = Tracker.timeline.getEventList();
+			/*for (i = 0; i< list.length ; i++)
+			{
+				json += getJsonFromEvent(list[i] as EventVO);
+			}
+			json += "]";*/
+			sendJson(json,app);
 		}
 		
 		private function sendJson(json:String,app:App):void
@@ -69,10 +97,8 @@ package com.DeskMetrics
 				function(e:ResultEvent):void
 				{  
 					if (Tracker.debug)
-						if (http.lastResult.toString().lastIndexOf('{"status_code": 1}')>=0)
-							Alert.show("Congratulations, you're being tracked by DeskMetrics(c)");
-						else
-							Alert.show("Oops, something went wrong. Perhaps some misconfiguration?");
+						if (http.lastResult.toString().lastIndexOf('{"status_code": 1}')<0)
+							Alert.show("Oops, something went wrong with Deskmetrics Analytics module. Perhaps some misconfiguration?");
 				});
 				
 			http.addEventListener(FaultEvent.FAULT,

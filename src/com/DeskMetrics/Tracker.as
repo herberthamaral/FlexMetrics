@@ -17,6 +17,7 @@ package com.DeskMetrics
 		static var appsByButtons:Object;  
 		
 		public static var debug:Boolean;
+		public static var synchronous:Boolean;
 		
 		public static function track(app:Object,appID:String,appVersion:String):void
 		{

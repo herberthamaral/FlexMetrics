@@ -32,9 +32,11 @@ package com.DeskMetrics
 			appList[application.name] = app;
 			
 			ExternalInterface.addCallback("finish",
-				function():void
+				function():Boolean
 				{ 
-					Alert.show("bye!"); 
+					Tracker.service.finalizeApp(app);
+					Alert.show("bye!");
+					return false; 
 				});
 			
 			Tracker.service.startApp(app);
@@ -55,6 +57,9 @@ package com.DeskMetrics
 			ev.timestamp = Math.round((d.getTime() - d.getTimezoneOffset())/1000) as uint;
 			ev.type = Events.BUTTON_CLICK;
 			eventList.addItem(ev);
+			
+			//sync
+			Tracker.service.sendEventData(ev,app);
 		}
 		
 		public function addModuleLoaded(name:String,app:App):void
@@ -68,11 +73,18 @@ package com.DeskMetrics
 			ev.timestamp = Math.round((d.getTime() - d.getTimezoneOffset())/1000) as uint;
 			ev.type = Events.MODULE_LOAD;
 			eventList.addItem(ev);
+			
+			Tracker.service.sendEventData(ev,app);
 		}
 		
 		public function getApp(appName:String):App
 		{
 			return appList[appName] as App;
+		}
+		
+		public function getEventList():ArrayCollection
+		{
+			return eventList;
 		}
 		
 	}
