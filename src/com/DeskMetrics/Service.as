@@ -75,13 +75,21 @@ package com.DeskMetrics
 					'"ts":"'+ts.toString()+'",' + 
 					'"ss":"'+hash.toUpperCase()+'"}';
 			
-			var i:int = 0;
-			var list:ArrayCollection = Tracker.timeline.getEventList();
-			/*for (i = 0; i< list.length ; i++)
+			if (!Tracker.synchronous)
 			{
-				json += getJsonFromEvent(list[i] as EventVO);
+				var i:int = 0;
+				var list:ArrayCollection = Tracker.timeline.getEventList();
+				json = "["+json+",";
+				
+				for (i = 0; i< list.length ; i++)
+				{
+					json += getJsonFromEvent(list[i] as EventVO)+",";
+				}
+				json = json.substr(0,json.length-1);
+				json += "]";
+				Alert.show(json);
 			}
-			json += "]";*/
+
 			sendJson(json,app);
 		}
 		

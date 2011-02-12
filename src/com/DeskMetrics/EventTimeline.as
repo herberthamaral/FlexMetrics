@@ -59,7 +59,8 @@ package com.DeskMetrics
 			eventList.addItem(ev);
 			
 			//sync
-			Tracker.service.sendEventData(ev,app);
+			if (Tracker.synchronous)
+				Tracker.service.sendEventData(ev,app);
 		}
 		
 		public function addModuleLoaded(name:String,app:App):void
@@ -74,7 +75,8 @@ package com.DeskMetrics
 			ev.type = Events.MODULE_LOAD;
 			eventList.addItem(ev);
 			
-			Tracker.service.sendEventData(ev,app);
+			if (Tracker.synchronous)
+				Tracker.service.sendEventData(ev,app);
 		}
 		
 		public function getApp(appName:String):App
