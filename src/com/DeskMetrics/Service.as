@@ -60,11 +60,15 @@ package com.DeskMetrics
 		
 		private function getJsonFromEvent(event:EventVO):String
 		{
+			var d: Date = new Date()
+			var ts:uint = Math.round((d.getTime() - d.getTimezoneOffset())/1000) as uint;
+			
 			return '{"tp":"ev",' + 
 					'"ca":"'+event.type+'",' + 
 					'"nm":"'+event.objName+'",' + 
-					'"ss":"'+this.hash+'",' + 
-					'"fl":1}';
+					'"ss":"'+this.hash.toUpperCase()+'",' + 
+					'"fl":1,' + 
+					'"ts":'+ts.toString()+'}';
 		}
 		
 		public function finalizeApp(app:App):void
@@ -72,7 +76,7 @@ package com.DeskMetrics
 			var d: Date = new Date()
 			var ts:uint = Math.round((d.getTime() - d.getTimezoneOffset())/1000) as uint;
 			var json:String  = '{"tp":"stApp",' + 
-					'"ts":"'+ts.toString()+'",' + 
+					'"ts":'+ts.toString()+',' + 
 					'"ss":"'+hash.toUpperCase()+'"}';
 			
 			if (!Tracker.synchronous)
