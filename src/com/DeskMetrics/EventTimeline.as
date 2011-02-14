@@ -49,12 +49,11 @@ package com.DeskMetrics
 		public function addButtonClick(name:String,app:App):void
 		{
 			var ev:EventVO = new EventVO();
-			var d: Date = new Date();
 			
 			ev.app = app;
 			ev.objName = name;
 			ev.state = app.getApplication().currentState;
-			ev.timestamp = Math.round((d.getTime() - d.getTimezoneOffset())/1000) as uint;
+			ev.timestamp = Util.getTimeStamp();
 			ev.type = Events.BUTTON_CLICK;
 			eventList.addItem(ev);
 			
@@ -66,13 +65,27 @@ package com.DeskMetrics
 		public function addModuleLoaded(name:String,app:App):void
 		{
 			var ev:EventVO = new EventVO();
-			var d: Date = new Date();
 			
 			ev.app = app;
 			ev.objName = name;
 			ev.state = app.getApplication().currentState;
-			ev.timestamp = Math.round((d.getTime() - d.getTimezoneOffset())/1000) as uint;
+			ev.timestamp = Util.getTimeStamp();
 			ev.type = Events.MODULE_LOAD;
+			eventList.addItem(ev);
+			
+			if (Tracker.synchronous)
+				Tracker.service.sendEventData(ev,app);
+		}
+		
+		public function addStateChange(name:String,app:App):void
+		{
+			var ev:EventVO = new EventVO();
+			
+			ev.app = app;
+			ev.objName = name;
+			ev.state = app.getApplication().currentState;
+			ev.timestamp = Util.getTimeStamp();
+			ev.type = Events.STATE_CHANGE;
 			eventList.addItem(ev);
 			
 			if (Tracker.synchronous)

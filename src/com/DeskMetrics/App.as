@@ -125,6 +125,8 @@ package com.DeskMetrics
 			
 			if(Tracker.debug)
 				Alert.show("Hi, I'm a module named "+module.name+".");
+			
+			Tracker.timeline.addModuleLoaded(module.name,this); 
 		}
 		
 		public function moduleUnloadEventHandler(e:ModuleEvent):void
@@ -160,6 +162,7 @@ package com.DeskMetrics
 				catch(e:TypeError){}
 				catch(e:ReferenceError){}
 			} 
+			Tracker.timeline.addStateChange(e.newState,this);
 		}
 	}
 }
