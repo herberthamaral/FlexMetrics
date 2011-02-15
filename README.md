@@ -28,6 +28,8 @@ This is the most basic example:
 
 Where app_id is your application id (you can get it on Deskmetrics dashboard) and app_version is your application version (like "0.1" or "1.0b").
 
+For now, we automatically track any kind of button click, state change and module load. And it is all recursive: if you load an module, we automatically detects all states and buttons inside it and attach an event listener to them.
+
 Since Flex has no equivalent of JavaScript' onunload, we need to do a small hack in order to track the stApp event. So, add this to your html-template:
 
     <script type="text/javascript">
@@ -66,6 +68,12 @@ Synchronous option
 ------------------
 
 The synchronous option can be activated by adding `Tracker.synchronous = true;` to your code and it allows you to send event data to Deskmetrics in real-time, without waiting until the end of execution to send all of them.
+
+Future implementations
+------------------------
+
+
+Please, check our issues under `features` tag to see the FlexMetrics future implementations.
 
 License
 -------
