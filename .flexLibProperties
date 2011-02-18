@@ -6,7 +6,7 @@
 <classEntry path="com.DeskMetrics.Langs"/>
 <classEntry path="com.DeskMetrics.Service"/>
 <classEntry path="com.DeskMetrics.Util"/>
-<classEntry path="com.DeskMetrics.Tracker"/>
+<classEntry path="com.DeskMetrics.DeskMetrics"/>
 <classEntry path="com.DeskMetrics.Events"/>
 <classEntry path="com.DeskMetrics.EventTimeline"/>
 </includeClasses>

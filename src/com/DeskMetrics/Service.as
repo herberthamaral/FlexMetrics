@@ -79,10 +79,10 @@ package com.DeskMetrics
 					'"ts":'+ts.toString()+',' + 
 					'"ss":"'+hash.toUpperCase()+'"}';
 			
-			if (!Tracker.synchronous)
+			if (!DeskMetrics.synchronous)
 			{
 				var i:int = 0;
-				var list:ArrayCollection = Tracker.timeline.getEventList();
+				var list:ArrayCollection = DeskMetrics.timeline.getEventList();
 				json = "["+json+",";
 				
 				for (i = 0; i< list.length ; i++)
@@ -108,7 +108,7 @@ package com.DeskMetrics
 			http.addEventListener(ResultEvent.RESULT,
 				function(e:ResultEvent):void
 				{  
-					if (Tracker.debug)
+					if (DeskMetrics.debug)
 						if (http.lastResult.toString().lastIndexOf('{"status_code": 1}')<0)
 							Alert.show("Oops, something went wrong with Deskmetrics Analytics module. Perhaps some misconfiguration?");
 				});
@@ -116,7 +116,7 @@ package com.DeskMetrics
 			http.addEventListener(FaultEvent.FAULT,
 				function(e:FaultEvent):void
 				{
-					if (Tracker.debug)
+					if (DeskMetrics.debug)
 						Alert.show("Oops, something went wrong when I tried to talk with DeskMetrics(c) server. Is your internet connection down?");
 				});
 				

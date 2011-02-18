@@ -34,12 +34,12 @@ package com.DeskMetrics
 			ExternalInterface.addCallback("finish",
 				function():Boolean
 				{ 
-					Tracker.service.finalizeApp(app);
+					DeskMetrics.service.finalizeApp(app);
 					Alert.show("bye!");
 					return false; 
 				});
 			
-			Tracker.service.startApp(app);
+			DeskMetrics.service.startApp(app);
 			application.addEventListener(FlexEvent.APPLICATION_COMPLETE,
 				function():void{ 
 					Alert.show("Finishing app");
@@ -58,8 +58,8 @@ package com.DeskMetrics
 			eventList.addItem(ev);
 			
 			//sync
-			if (Tracker.synchronous)
-				Tracker.service.sendEventData(ev,app);
+			if (DeskMetrics.synchronous)
+				DeskMetrics.service.sendEventData(ev,app);
 		}
 		
 		public function addModuleLoaded(name:String,app:App):void
@@ -73,8 +73,8 @@ package com.DeskMetrics
 			ev.type = Events.MODULE_LOAD;
 			eventList.addItem(ev);
 			
-			if (Tracker.synchronous)
-				Tracker.service.sendEventData(ev,app);
+			if (DeskMetrics.synchronous)
+				DeskMetrics.service.sendEventData(ev,app);
 		}
 		
 		public function addStateChange(name:String,app:App):void
@@ -88,8 +88,8 @@ package com.DeskMetrics
 			ev.type = Events.STATE_CHANGE;
 			eventList.addItem(ev);
 			
-			if (Tracker.synchronous)
-				Tracker.service.sendEventData(ev,app);
+			if (DeskMetrics.synchronous)
+				DeskMetrics.service.sendEventData(ev,app);
 		}
 		
 		public function getApp(appName:String):App
