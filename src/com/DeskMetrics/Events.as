@@ -9,5 +9,6 @@ package com.DeskMetrics
 		public static const DeskMetricsEventCancel:String = "evC";
 		public static const DeskMetricsEventPeriod:String = "evP";
 		public static const DeskMetricsLog:String = "lg";
+		public static const DeskMetricsCustomData:String = "ctD";
 	}
 }

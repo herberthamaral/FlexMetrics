@@ -69,14 +69,19 @@ package com.DeskMetrics
 					'"fl":'+flow.toString()+',' + 
 					'"ts":'+event.timestamp+',';
 			
-			if (event.type != Events.DeskMetricsLog)
+			if (event.type != Events.DeskMetricsLog && event.type != Events.DeskMetricsCustomData)
 			{
 				json += '"ca":"'+event.category+'",' + 
 						'"nm":"'+event.objName+'",'; 
 			}
-			else
+			else if (event.type == Events.DeskMetricsLog)
 			{
 				json += '"ms":"'+event.message+'",';
+			}
+			else if (event.type == Events.DeskMetricsCustomData)
+			{
+				json += '"nm":"'+event.objName+'",' + 
+						'"vl":"'+event.value+'",';
 			}
 			
 			flow++;

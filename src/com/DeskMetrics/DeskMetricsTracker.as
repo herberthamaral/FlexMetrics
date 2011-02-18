@@ -150,6 +150,16 @@ package com.DeskMetrics
 			DispatchEvent(e);
 		}
 		
+		public static function TrackCustomData(name:String,value:String):void
+		{
+			var e:EventVO = EventFactory("event","value");
+			
+			e.type = Events.DeskMetricsCustomData;
+			e.objName = name;
+			e.value = value;
+			DispatchEvent(e);
+		}
+		
 		/**
 		 * Helper methods
 		 */ 
