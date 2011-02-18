@@ -122,6 +122,15 @@ package com.DeskMetrics
 			DispatchEvent(e);
 		}
 		
+		public static function TrackEventCancel (category:String,name:String):void
+		{
+			var e:EventVO = EventFactory(category,name);
+			
+			e.type = Events.DeskMetricsEventCancel;
+			
+			DispatchEvent(e);
+		}
+		
 		/**
 		 * Helper methods
 		 */ 
