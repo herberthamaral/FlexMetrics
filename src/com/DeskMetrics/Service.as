@@ -65,16 +65,27 @@ package com.DeskMetrics
 			
 			var json:String = 
 					'{"tp":"'+event.type+'",' + 
-					'"ca":"'+event.category+'",' + 
-					'"nm":"'+event.objName+'",' + 
 					'"ss":"'+this.hash.toUpperCase()+'",' + 
 					'"fl":'+flow.toString()+',' + 
 					'"ts":'+event.timestamp+',';
+			
+			if (event.type != Events.DeskMetricsLog)
+			{
+				json += '"ca":"'+event.category+'",' + 
+						'"nm":"'+event.objName+'",'; 
+			}
+			else
+			{
+				json += '"ms":"'+event.message+'",';
+			}
 			
 			flow++;
 			
 			if (event.value != "" && event.value != null)
 				json += '"vl":"'+event.value+'",';
+			
+			if (event.period > 0)
+				json += '"tm":'+event.period+',';
 			
 			json = json.substr(0,json.length-1); //removes last ,
 			json += '}';
@@ -120,7 +131,7 @@ package com.DeskMetrics
 				{  
 					if (DeskMetricsTracker.debug)
 						if (http.lastResult.toString().lastIndexOf('{"status_code": 1}')<0)
-							Alert.show("Oops, something went wrong with Deskmetrics Analytics module. Perhaps some misconfiguration?");
+							Alert.show("Oops, something went wrong with DeskMetrics Analytics module. Perhaps some misconfiguration?");
 				});
 				
 			http.addEventListener(FaultEvent.FAULT,

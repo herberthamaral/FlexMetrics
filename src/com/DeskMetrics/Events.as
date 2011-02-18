@@ -7,5 +7,7 @@ package com.DeskMetrics
 		public static const DeskMetricsEventTimedStart:String = "evS";
 		public static const DeskMetricsEventTimedStop:String = "evST";
 		public static const DeskMetricsEventCancel:String = "evC";
+		public static const DeskMetricsEventPeriod:String = "evP";
+		public static const DeskMetricsLog:String = "lg";
 	}
 }

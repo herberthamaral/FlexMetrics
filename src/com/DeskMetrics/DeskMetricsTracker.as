@@ -131,6 +131,25 @@ package com.DeskMetrics
 			DispatchEvent(e);
 		}
 		
+		public static function TrackEventPeriod(category:String,name:String,time:int):void
+		{
+			var e:EventVO = EventFactory(category,name);
+			
+			e.type = Events.DeskMetricsEventPeriod;
+			e.period = time;
+			
+			DispatchEvent(e);
+		}
+		
+		public static function TrackLog(message:String):void
+		{
+			var e:EventVO = EventFactory("log","log");
+			
+			e.type = Events.DeskMetricsLog;
+			e.message = message;
+			DispatchEvent(e);
+		}
+		
 		/**
 		 * Helper methods
 		 */ 

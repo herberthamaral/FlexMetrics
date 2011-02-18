@@ -9,5 +9,7 @@ package com.DeskMetrics
 		public var objName:String;
 		public var value:String;
 		public var type:String;
+		public var period:int = -1;
+		public var message:String;
 	}
 }
