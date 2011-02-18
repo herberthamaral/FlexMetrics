@@ -117,16 +117,16 @@ package com.DeskMetrics
 					var btn:Button = module[s] as Button;
 					//make sure this is a button ;)
 					t = btn.label;
-					DeskMetrics.trackButton(btn,application);
+					DeskMetricsTracker.trackButton(btn,application);
 				}
 				catch(e:TypeError){}
 				catch(e:ReferenceError){}
 			}
 			
-			if(DeskMetrics.debug)
+			if(DeskMetricsTracker.debug)
 				Alert.show("Hi, I'm a module named "+module.name+".");
 			
-			DeskMetrics.timeline.addModuleLoaded(module.name,this); 
+			DeskMetricsTracker.timeline.addModuleLoaded(module.name,this); 
 		}
 		
 		public function moduleUnloadEventHandler(e:ModuleEvent):void
@@ -136,9 +136,9 @@ package com.DeskMetrics
 		
 		private function buttonClickEventHandler(e:MouseEvent):void
 		{
-			var app:App = DeskMetrics.appsByButtons[e.target] as App;
-			DeskMetrics.timeline.addButtonClick(e.target["id"] as String,app); 
-				if (DeskMetrics.debug)
+			var app:App = DeskMetricsTracker.appsByButtons[e.target] as App;
+			DeskMetricsTracker.timeline.addButtonClick(e.target["id"] as String,app); 
+				if (DeskMetricsTracker.debug)
 					Alert.show("I'm '"+app.application.name+"\\"+(e.target["id"] as String)+"' and I'm being tracked by DeskMetrics Tracker!");
 		}
 		
@@ -157,12 +157,12 @@ package com.DeskMetrics
 					var btn:Button = app[s] as Button;
 					//make sure this is a button ;)
 					t = btn.label;
-					DeskMetrics.trackButton(btn,application);
+					DeskMetricsTracker.trackButton(btn,application);
 				}
 				catch(e:TypeError){}
 				catch(e:ReferenceError){}
 			} 
-			DeskMetrics.timeline.addStateChange(e.newState,this);
+			DeskMetricsTracker.timeline.addStateChange(e.newState,this);
 		}
 	}
 }

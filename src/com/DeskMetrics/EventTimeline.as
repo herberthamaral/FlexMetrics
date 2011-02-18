@@ -34,12 +34,12 @@ package com.DeskMetrics
 			ExternalInterface.addCallback("finish",
 				function():Boolean
 				{ 
-					DeskMetrics.service.finalizeApp(app);
+					DeskMetricsTracker.service.finalizeApp(app.id);
 					Alert.show("bye!");
 					return false; 
 				});
 			
-			DeskMetrics.service.startApp(app);
+			DeskMetricsTracker.service.startApp(app.id,app.version);
 			application.addEventListener(FlexEvent.APPLICATION_COMPLETE,
 				function():void{ 
 					Alert.show("Finishing app");
@@ -52,14 +52,14 @@ package com.DeskMetrics
 			
 			ev.app = app;
 			ev.objName = name;
-			ev.state = app.getApplication().currentState;
 			ev.timestamp = Util.getTimeStamp();
-			ev.type = Events.BUTTON_CLICK;
+			ev.category = DefaultEventCategories.BUTTON_CLICK;
+			
 			eventList.addItem(ev);
 			
 			//sync
-			if (DeskMetrics.synchronous)
-				DeskMetrics.service.sendEventData(ev,app);
+			if (DeskMetricsTracker.synchronous)
+				DeskMetricsTracker.service.sendEventData(ev,app.id);
 		}
 		
 		public function addModuleLoaded(name:String,app:App):void
@@ -68,13 +68,12 @@ package com.DeskMetrics
 			
 			ev.app = app;
 			ev.objName = name;
-			ev.state = app.getApplication().currentState;
 			ev.timestamp = Util.getTimeStamp();
-			ev.type = Events.MODULE_LOAD;
+			ev.category = DefaultEventCategories.MODULE_LOAD;
 			eventList.addItem(ev);
 			
-			if (DeskMetrics.synchronous)
-				DeskMetrics.service.sendEventData(ev,app);
+			if (DeskMetricsTracker.synchronous)
+				DeskMetricsTracker.service.sendEventData(ev,app.id);
 		}
 		
 		public function addStateChange(name:String,app:App):void
@@ -83,18 +82,22 @@ package com.DeskMetrics
 			
 			ev.app = app;
 			ev.objName = name;
-			ev.state = app.getApplication().currentState;
 			ev.timestamp = Util.getTimeStamp();
-			ev.type = Events.STATE_CHANGE;
+			ev.category = DefaultEventCategories.STATE_CHANGE;
 			eventList.addItem(ev);
 			
-			if (DeskMetrics.synchronous)
-				DeskMetrics.service.sendEventData(ev,app);
+			if (DeskMetricsTracker.synchronous)
+				DeskMetricsTracker.service.sendEventData(ev,app.id);
 		}
 		
 		public function getApp(appName:String):App
 		{
 			return appList[appName] as App;
+		}
+		
+		public function addEvent(event:EventVO):void
+		{
+			eventList.addItem(event);
 		}
 		
 		public function getEventList():ArrayCollection

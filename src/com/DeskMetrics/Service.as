@@ -19,7 +19,7 @@ package com.DeskMetrics
 			
 		}
 		
-		public function startApp(app:App):void
+		public function startApp(appID:String,appVersion:String):void
 		{
 			var d:Date = new Date();
 			var ts:uint = Math.round((d.getTime() - d.getTimezoneOffset())/1000) as uint;
@@ -27,7 +27,7 @@ package com.DeskMetrics
 			
 			var json:String = '{' + 
 						'"tp":"startApp",' + 
-						'"aver":"'+app.version+'",' + 
+						'"aver":"'+appVersion+'",' + 
 						'"ID":"'+this.getUserID()+'",' + 
 						'"ss":"'+hash.toUpperCase()+'",' + 
 						'"ts":'+ts.toString()+',' + 
@@ -50,28 +50,34 @@ package com.DeskMetrics
 						'"dfr":null' + 
 					'}';
 
-			sendJson(json,app);
+			sendJson(json,appID);
 		}
 		
-		function sendEventData(e:EventVO,app:App):void
+		function sendEventData(e:EventVO,appID:String):void
 		{
-			sendJson(getJsonFromEvent(e),app);
+			sendJson(getJsonFromEvent(e),appID);
 		}
 		
 		private function getJsonFromEvent(event:EventVO):String
 		{
-			var d: Date = new Date()
-			var ts:uint = Math.round((d.getTime() - d.getTimezoneOffset())/1000) as uint;
+			var d: Date = new Date();
 			
-			return '{"tp":"ev",' + 
-					'"ca":"'+event.type+'",' + 
+			var json:String = 
+					'{"tp":"ev",' + 
+					'"ca":"'+event.category+'",' + 
 					'"nm":"'+event.objName+'",' + 
 					'"ss":"'+this.hash.toUpperCase()+'",' + 
 					'"fl":1,' + 
-					'"ts":'+ts.toString()+'}';
+					'"ts":'+event.timestamp+',';
+			
+			if (event.value != "")
+				json += '"vl":"'+event.value+'",';
+			
+			json = json.substr(0,json.length-1); //removes last ,
+			return json;
 		}
 		
-		public function finalizeApp(app:App):void
+		public function finalizeApp(appID:String):void
 		{
 			var d: Date = new Date()
 			var ts:uint = Math.round((d.getTime() - d.getTimezoneOffset())/1000) as uint;
@@ -79,10 +85,10 @@ package com.DeskMetrics
 					'"ts":'+ts.toString()+',' + 
 					'"ss":"'+hash.toUpperCase()+'"}';
 			
-			if (!DeskMetrics.synchronous)
+			if (!DeskMetricsTracker.synchronous)
 			{
 				var i:int = 0;
-				var list:ArrayCollection = DeskMetrics.timeline.getEventList();
+				var list:ArrayCollection = DeskMetricsTracker.timeline.getEventList();
 				json = "["+json+",";
 				
 				for (i = 0; i< list.length ; i++)
@@ -94,21 +100,21 @@ package com.DeskMetrics
 				Alert.show(json);
 			}
 
-			sendJson(json,app);
+			sendJson(json,appID);
 		}
 		
-		private function sendJson(json:String,app:App):void
+		private function sendJson(json:String,appID:String):void
 		{
 			var http:HTTPService = new HTTPService();
 			http.contentType = "text/javascript";
 			http.method = "POST";
 			http.resultFormat ="text";
 			http.request = json;
-			http.url = "http://"+app.id.toLowerCase()+".api.deskmetrics.com/sendData";
+			http.url = "http://"+appID.toLowerCase()+".api.deskmetrics.com/sendData";
 			http.addEventListener(ResultEvent.RESULT,
 				function(e:ResultEvent):void
 				{  
-					if (DeskMetrics.debug)
+					if (DeskMetricsTracker.debug)
 						if (http.lastResult.toString().lastIndexOf('{"status_code": 1}')<0)
 							Alert.show("Oops, something went wrong with Deskmetrics Analytics module. Perhaps some misconfiguration?");
 				});
@@ -116,7 +122,7 @@ package com.DeskMetrics
 			http.addEventListener(FaultEvent.FAULT,
 				function(e:FaultEvent):void
 				{
-					if (DeskMetrics.debug)
+					if (DeskMetricsTracker.debug)
 						Alert.show("Oops, something went wrong when I tried to talk with DeskMetrics(c) server. Is your internet connection down?");
 				});
 				
