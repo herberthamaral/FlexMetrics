@@ -92,17 +92,42 @@ package com.DeskMetrics
 		
 		public static function TrackEventValue(category:String,name:String,value:String=""):void
 		{
-			var e:EventVO = new EventVO();
-			e.timestamp = Util.getTimeStamp();
-			e.category = category;
-			e.objName = name;
+			var e:EventVO = EventFactory(category,name);
+			
 			e.type = Events.DeskMetricsEvent;
 			if (value!="" && value != null)
 			{
 				e.type = Events.DeskMetricsEventValue;
 				e.value = value;
 			}
-				
+			
+			DispatchEvent(e);
+		}
+		
+		public static function TrackEventStart (category:String,name:String):void
+		{
+			var e:EventVO = EventFactory(category,name);
+			
+			e.type = Events.DeskMetricsEventTimedStart;
+			
+			DispatchEvent(e);
+		}
+		
+		public static function TrackEventStop (category:String,name:String):void
+		{
+			var e:EventVO = EventFactory(category,name);
+			
+			e.type = Events.DeskMetricsEventTimedStop;
+			
+			DispatchEvent(e);
+		}
+		
+		/**
+		 * Helper methods
+		 */ 
+		
+		private static function DispatchEvent(e:EventVO):void
+		{
 			if (synchronous)
 			{
 				service.sendEventData(e,appID);
@@ -111,6 +136,15 @@ package com.DeskMetrics
 			{
 				timeline.addEvent(e);
 			}
+		}
+		
+		private static function EventFactory(category:String,name:String):EventVO
+		{
+			var e:EventVO = new EventVO();
+			e.timestamp = Util.getTimeStamp();
+			e.category = category;
+			e.objName = name;
+			return e;
 		}
 		
 		public static function Stop():void
