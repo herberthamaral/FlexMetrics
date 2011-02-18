@@ -97,7 +97,7 @@ package com.DeskMetrics
 			e.category = category;
 			e.objName = name;
 			e.type = Events.DeskMetricsEvent;
-			if (value!="")
+			if (value!="" && value != null)
 			{
 				e.type = Events.DeskMetricsEventValue;
 				e.value = value;

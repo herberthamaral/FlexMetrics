@@ -63,17 +63,18 @@ package com.DeskMetrics
 			var d: Date = new Date();
 			
 			var json:String = 
-					'{"tp":"ev",' + 
+					'{"tp":"'+event.type+'",' + 
 					'"ca":"'+event.category+'",' + 
 					'"nm":"'+event.objName+'",' + 
 					'"ss":"'+this.hash.toUpperCase()+'",' + 
 					'"fl":1,' + 
 					'"ts":'+event.timestamp+',';
 			
-			if (event.value != "")
+			if (event.value != "" && event.value != null)
 				json += '"vl":"'+event.value+'",';
 			
 			json = json.substr(0,json.length-1); //removes last ,
+			json += '}';
 			return json;
 		}
 		
