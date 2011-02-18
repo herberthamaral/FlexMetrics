@@ -14,6 +14,7 @@ package com.DeskMetrics
 		private static var langs:Object = {"cs":"1029", "da":"1030", "nl":"1043","en":"1033","fi":"1035","fr":"1036","de":"1031","hu":"1038","it":"1040","ja":"1041","ko":"1042","no":"1044","xu":"0","pl":"1045","pt":"1046","ru":"1049","zh-CN":"2052","es":"1034","sv":"1053","zh-TW":"1028","tr":"1055"};;
 		
 		private var hash:String;
+		private var flow:int = 1;
 		public function Service()
 		{
 			
@@ -67,8 +68,10 @@ package com.DeskMetrics
 					'"ca":"'+event.category+'",' + 
 					'"nm":"'+event.objName+'",' + 
 					'"ss":"'+this.hash.toUpperCase()+'",' + 
-					'"fl":1,' + 
+					'"fl":'+flow.toString()+',' + 
 					'"ts":'+event.timestamp+',';
+			
+			flow++;
 			
 			if (event.value != "" && event.value != null)
 				json += '"vl":"'+event.value+'",';
