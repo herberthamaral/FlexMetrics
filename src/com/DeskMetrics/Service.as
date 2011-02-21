@@ -130,7 +130,6 @@ package com.DeskMetrics
 				}
 				json = json.substr(0,json.length-1);
 				json += "]";
-				Alert.show(json);
 			}
 
 			sendJson(json,appID);
