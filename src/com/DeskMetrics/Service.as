@@ -69,7 +69,7 @@ package com.DeskMetrics
 					'"fl":'+flow.toString()+',' + 
 					'"ts":'+event.timestamp+',';
 			
-			if (event.type != Events.DeskMetricsLog && event.type != Events.DeskMetricsCustomData)
+			if (event.type != Events.DeskMetricsLog && event.type != Events.DeskMetricsCustomData && event.type != Events.DeskMetricsCustomDataR && event.type != Events.DeskMetricsException && event.type != Events.DeskMetricsLog)
 			{
 				json += '"ca":"'+event.category+'",' + 
 						'"nm":"'+event.objName+'",'; 
@@ -78,10 +78,23 @@ package com.DeskMetrics
 			{
 				json += '"ms":"'+event.message+'",';
 			}
-			else if (event.type == Events.DeskMetricsCustomData)
+			else if (event.type == Events.DeskMetricsCustomData || event.type == Events.DeskMetricsCustomDataR)
 			{
 				json += '"nm":"'+event.objName+'",' + 
 						'"vl":"'+event.value+'",';
+				
+				if (event.type == Events.DeskMetricsCustomDataR)
+				{
+					json += '"aver":"'+DeskMetricsTracker.appID+'",' + 
+							'"ID":"'+this.getUserID()+'",';
+				}
+			}
+			else if (event.type == Events.DeskMetricsException)
+			{
+				json += '"msg":"'+event.message+'",' + 
+						'"stk":"'+event.stack+'",' + 
+						'"src":"'+event.objName+'",' + 
+						'"tgs":"'+event.targetsite+'",';
 			}
 			
 			flow++;

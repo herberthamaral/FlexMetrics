@@ -10,5 +10,7 @@ package com.DeskMetrics
 		public static const DeskMetricsEventPeriod:String = "evP";
 		public static const DeskMetricsLog:String = "lg";
 		public static const DeskMetricsCustomData:String = "ctD";
+		public static const DeskMetricsCustomDataR:String = "ctDR";
+		public static const DeskMetricsException:String = "exC";
 	}
 }

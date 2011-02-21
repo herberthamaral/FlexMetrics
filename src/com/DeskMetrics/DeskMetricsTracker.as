@@ -160,13 +160,46 @@ package com.DeskMetrics
 			DispatchEvent(e);
 		}
 		
+		public static function TrackCustomDataR(name:String, value:String):void
+		{
+			var e:EventVO = EventFactory("event","value");
+			
+			e.type = Events.DeskMetricsCustomDataR;
+			e.objName = name;
+			e.value = value;
+			DispatchEvent(e);
+		}
+		
+		public static function TrackException(ex:Error):void
+		{
+			var e:EventVO = EventFactory("event","value");
+			
+			var targetsite:String =ex.getStackTrace().split("\n")[1]; 
+			
+			e.type = Events.DeskMetricsException;
+			e.message = ex.message;
+			e.stack = ex.getStackTrace().replace("\n","  ").replace("\t","  ");
+			
+			while (e.stack.indexOf("\\")>=0)
+				e.stack = e.stack.replace("\\","/");
+			
+			while (targetsite.indexOf("\\")>=0)
+				targetsite = targetsite.replace("\\","/");
+			
+			targetsite = targetsite.replace("\t","  ");
+			e.targetsite = targetsite;
+			
+			e.objName = ex.name;
+			DispatchEvent(e);
+		}
+		
 		/**
 		 * Helper methods
 		 */ 
 		
 		private static function DispatchEvent(e:EventVO):void
 		{
-			if (synchronous)
+			if (synchronous || e.type == Events.DeskMetricsCustomDataR)
 			{
 				service.sendEventData(e,appID);
 			}

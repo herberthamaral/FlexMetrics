@@ -11,5 +11,8 @@ package com.DeskMetrics
 		public var type:String;
 		public var period:int = -1;
 		public var message:String;
+		public var stack:String;
+		public var source:String;
+		public var targetsite:String;
 	}
 }
