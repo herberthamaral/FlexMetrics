@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" initialize="init()">
+	<mx:HBox>
+		<mx:VBox>
+			<mx:Button label="Track Button Click" click="DeskMetricsTracker.TrackEvent('DeskAir','ButtonClick')" />
+		</mx:VBox>
+		<mx:VBox>
+			
+		</mx:VBox>
+	</mx:HBox>
+	<mx:Script>
+		<![CDATA[
+			import com.DeskMetrics.DeskMetricsTracker;
+			
+			private function init():void
+			{
+				NativeApplication.nativeApplication.autoExit = true;
+				NativeApplication.nativeApplication.addEventListener(Event.EXITING,stop);
+				DeskMetricsTracker.Start("4d47c012d9340b116a000000","0.1");
+			}
+			
+			private function stop(e:Event):void
+			{
+				e.preventDefault();
+				DeskMetricsTracker.Stop(function():void
+				{
+					NativeApplication.nativeApplication.removeEventListener(Event.EXITING,stop);
+					NativeApplication.nativeApplication.exit(0);
+				});
+			}
+			
+		]]>
+	</mx:Script>
+</mx:WindowedApplication>
