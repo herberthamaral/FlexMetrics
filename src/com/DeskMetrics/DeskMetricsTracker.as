@@ -14,10 +14,8 @@ package com.DeskMetrics
 		
 		// hash object which has button objects as keys and applications as
 		// values
-		static var appsByButtons:Object;  
 		
 		public static var debug:Boolean;
-		public static var synchronous:Boolean;
 		
 		private static function init()
 		{
@@ -26,9 +24,6 @@ package com.DeskMetrics
 			
 			if (timeline == null)
 				timeline = new EventTimeline();
-			
-			if (appsByButtons == null)
-				appsByButtons = new Object();
 		}
 		
 		
@@ -39,11 +34,10 @@ package com.DeskMetrics
 	   	static var appID;
 	   	static var appVersion;
 	   	
-		public static function Start(appid:String,version:String,realtime:Boolean):void
+		public static function Start(appid:String,version:String):void
 		{
 			init();
-				
-			synchronous = realtime;
+			
 			appID = appid;
 			appVersion = version;
 			service.startApp(appid,version);
@@ -163,7 +157,7 @@ package com.DeskMetrics
 		
 		private static function DispatchEvent(e:EventVO):void
 		{
-			if (synchronous || e.type == Events.DeskMetricsCustomDataR)
+			if (e.type == Events.DeskMetricsCustomDataR)
 			{
 				service.sendEventData(e,appID);
 			}
