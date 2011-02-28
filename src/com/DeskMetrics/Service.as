@@ -15,10 +15,7 @@ package com.DeskMetrics
 		
 		private var hash:String;
 		private var flow:int = 1;
-		public function Service()
-		{
-			
-		}
+		
 		
 		public function startApp(appID:String,appVersion:String):void
 		{
@@ -167,11 +164,6 @@ package com.DeskMetrics
 				obj.data.ID = MD5.hash((new Date().getTime()).toString());
 			
 			return obj.data.ID;
-		}
-		
-		public function getSystemInfo():void
-		{
-			
 		}
 		
 	}
