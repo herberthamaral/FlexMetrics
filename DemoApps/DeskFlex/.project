@@ -3,6 +3,7 @@
 	<name>DeskFlex</name>
 	<comment></comment>
 	<projects>
+		<project>DeskMetrics</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

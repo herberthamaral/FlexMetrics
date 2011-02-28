@@ -1,4 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
-	
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" name="DeskFlex" layout="absolute" initialize="init()">
+    <mx:VBox>
+    	<mx:Button label="Track event" click="DeskMetricsTracker.TrackEvent('DeskFlex','TrackEventButton')" />
+    	<mx:Button label="Finish App" click="stop()" />
+    </mx:VBox>
+    
+    <mx:Script>
+        <![CDATA[
+                
+            import com.DeskMetrics.DeskMetricsTracker;
+            
+            private function init():void
+            {
+                    DeskMetricsTracker.debug = true;
+                    DeskMetricsTracker.Start("YOURAPPID","0.1");
+            }
+            
+            private function stop():void
+            {
+            	DeskMetricsTracker.Stop(function():void
+            	{
+            		ExternalInterface.call("window.close");
+            	});
+            }
+        ]]>
+    </mx:Script>
 </mx:Application>

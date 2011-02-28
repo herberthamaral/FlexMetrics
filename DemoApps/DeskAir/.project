@@ -3,6 +3,7 @@
 	<name>DeskAir</name>
 	<comment></comment>
 	<projects>
+		<project>DeskMetrics</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
