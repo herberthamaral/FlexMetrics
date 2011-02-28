@@ -19,7 +19,7 @@ Examples
                             private function init():void
                             {
                                     DeskMetricsTracker.debug = true;
-                                    DeskMetricsTracker.Start("4d47c012d9340b116a000000","0.1");
+                                    DeskMetricsTracker.Start("YOURAPPID","0.1");
                             }
                     ]]>
             </mx:Script>
@@ -40,7 +40,7 @@ Examples
                             {
                                     NativeApplication.nativeApplication.autoExit = true;
                                     NativeApplication.nativeApplication.addEventListener(Event.EXITING,stop);
-                                    DeskMetricsTracker.Start("4d47c012d9340b116a000000","0.1");
+                                    DeskMetricsTracker.Start("YOURAPPID","0.1");
                             }
                             
                             private function stop(e:Event):void
@@ -68,7 +68,7 @@ FlexMetrics keeps the API compatibility with other DeskMetrics components. Next,
 
 Must be called when your application starts.
 
-Example: `com.DeskMetrics.DeskMetricsTracker.Start("4c47c012d9340b116a000000","1.5b")`
+Example: `com.DeskMetrics.DeskMetricsTracker.Start("YOURAPPID","1.5b")`
 
     com.DeskMetrics.DeskMetricsTracker.TrackEvent(category:String,name:String)
 
