@@ -31,42 +31,6 @@ package com.DeskMetrics
 				appsByButtons = new Object();
 		}
 		
-		public static function track(app:Object,appID:String,appVersion:String):void
-		{
-			init();
-			
-			timeline.addApp(app as Application,appID,appVersion);
-			
-			var description:XML = describeType(app);
-			var list:XMLList = description.child("accessor");		
-			var t:String;
-			var application:Application = app as Application;
-			
-			var a:Object  = Capabilities; 
-			
-			for (var i:int;i<list.length();i++)
-			{
-				var s:String = list[i].@name;
-				
-				try
-				{
-					var btn:Button = app[s] as Button;
-					
-					//make sure this is a button ;)
-					t = btn.label;
-					DeskMetricsTracker.trackButton(btn,application);
-				}
-				catch(e:TypeError){}
-				catch(e:ReferenceError){}
-			}
-		}
-		
-		public static function trackButton(b:Button,application:Application):void
-		{
-			var app:App = DeskMetricsTracker.timeline.getApp(application.name);
-			appsByButtons[b] = app;
-			app.addButton(b);
-		}
 		
 		/**
 		 * DeskMetrics library default methods
