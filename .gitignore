@@ -1,3 +1,5 @@
 bin
 *.swc
 *.swf
+bin-debug
+*.swz

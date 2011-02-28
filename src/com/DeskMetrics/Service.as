@@ -15,7 +15,7 @@ package com.DeskMetrics
 		
 		private var hash:String;
 		private var flow:int = 1;
-		
+		private var startAppJson:String;
 		
 		public function startApp(appID:String,appVersion:String):void
 		{
@@ -48,7 +48,7 @@ package com.DeskMetrics
 						'"dfr":null' + 
 					'}';
 
-			sendJson(json,appID);
+			startAppJson = json;
 		}
 		
 		function sendEventData(e:EventVO,appID:String):void
@@ -93,6 +93,10 @@ package com.DeskMetrics
 						'"src":"'+event.objName+'",' + 
 						'"tgs":"'+event.targetsite+'",';
 			}
+			else if (event.type == Events.DeskMetricsEventPeriod)
+			{
+				json += '"ec":'+event.completed?"1":"0";
+			}
 			
 			flow++;
 			
@@ -107,7 +111,7 @@ package com.DeskMetrics
 			return json;
 		}
 		
-		public function finalizeApp(appID:String):void
+		public function finalizeApp(appID:String,finalize:Function=null):void
 		{
 			var d: Date = new Date()
 			var ts:uint = Math.round((d.getTime() - d.getTimezoneOffset())/1000) as uint;
@@ -124,14 +128,14 @@ package com.DeskMetrics
 			{
 				json += getJsonFromEvent(list[i] as EventVO)+",";
 			}
-			json = json.substr(0,json.length-1);
+			json += startAppJson;
 			json += "]";
 
 
-			sendJson(json,appID);
+			sendJson(json,appID,finalize);
 		}
 		
-		private function sendJson(json:String,appID:String):void
+		private function sendJson(json:String,appID:String,finalize:Function=null):void
 		{
 			var http:HTTPService = new HTTPService();
 			http.contentType = "text/javascript";
@@ -145,6 +149,8 @@ package com.DeskMetrics
 					if (DeskMetricsTracker.debug)
 						if (http.lastResult.toString().lastIndexOf('{"status_code": 1}')<0)
 							Alert.show("Oops, something went wrong with DeskMetrics Analytics module. Perhaps some misconfiguration?");
+					if (finalize!=null)
+						finalize();
 				});
 				
 			http.addEventListener(FaultEvent.FAULT,
@@ -152,6 +158,9 @@ package com.DeskMetrics
 				{
 					if (DeskMetricsTracker.debug)
 						Alert.show("Oops, something went wrong when I tried to talk with DeskMetrics(c) server. Is your internet connection down?");
+					
+					if (finalize!=null)
+						finalize();
 				});
 				
 			http.send();

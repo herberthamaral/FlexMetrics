@@ -1,11 +1,6 @@
 package com.DeskMetrics
 {
 	import flash.events.*;
-	import flash.system.Capabilities;
-	import flash.utils.describeType;
-	
-	import mx.controls.Button;
-	import mx.core.Application;
 
 	public class DeskMetricsTracker
 	{
@@ -62,39 +57,13 @@ package com.DeskMetrics
 			DispatchEvent(e);
 		}
 		
-		public static function TrackEventStart (category:String,name:String):void
-		{
-			var e:EventVO = EventFactory(category,name);
-			
-			e.type = Events.DeskMetricsEventTimedStart;
-			
-			DispatchEvent(e);
-		}
-		
-		public static function TrackEventStop (category:String,name:String):void
-		{
-			var e:EventVO = EventFactory(category,name);
-			
-			e.type = Events.DeskMetricsEventTimedStop;
-			
-			DispatchEvent(e);
-		}
-		
-		public static function TrackEventCancel (category:String,name:String):void
-		{
-			var e:EventVO = EventFactory(category,name);
-			
-			e.type = Events.DeskMetricsEventCancel;
-			
-			DispatchEvent(e);
-		}
-		
-		public static function TrackEventPeriod(category:String,name:String,time:int):void
+		public static function TrackEventPeriod(category:String,name:String,time:int,completed:Boolean):void
 		{
 			var e:EventVO = EventFactory(category,name);
 			
 			e.type = Events.DeskMetricsEventPeriod;
 			e.period = time;
+			e.completed = completed;
 			
 			DispatchEvent(e);
 		}
@@ -176,9 +145,9 @@ package com.DeskMetrics
 			return e;
 		}
 		
-		public static function Stop():void
+		public static function Stop(f:Function=null):void
 		{
-			service.finalizeApp(appID);
+			service.finalizeApp(appID,f);
 		}
 	}
 }

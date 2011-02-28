@@ -13,5 +13,6 @@ package com.DeskMetrics
 		public var stack:String;
 		public var source:String;
 		public var targetsite:String;
+		public var completed:Boolean;
 	}
 }
