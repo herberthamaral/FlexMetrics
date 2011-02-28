@@ -41,30 +41,9 @@ var requiredRevision = ${version_revision};
 // -----------------------------------------------------------------------------
 // -->
 </script>
-<script type="text/javascript">
-
-function getFlexApp(appName)
-{
-  if (navigator.appName.indexOf ("Microsoft") !=-1)
-  {
-    return window[appName];
-  } 
-  else 
-  {
-    return document[appName];
-  }
-}
-
-function finishApp()
-{
-    getFlexApp('DeskMetrics').finish();
-    alert('Sending data to DeskMetrics');
-    return false;
-}
-
-</script>
 </head>
-<body scroll="no" onunload="return finishApp()">
+
+<body scroll="no">
 <script language="JavaScript" type="text/javascript">
 <!--
 // Version check for the Flash Player that has the ability to start Player Product Install (6.0r65)

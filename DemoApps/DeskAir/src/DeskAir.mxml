@@ -16,7 +16,7 @@
 			{
 				NativeApplication.nativeApplication.autoExit = true;
 				NativeApplication.nativeApplication.addEventListener(Event.EXITING,stop);
-				DeskMetricsTracker.Start("4d47c012d9340b116a000000","0.1");
+				DeskMetricsTracker.Start("YOURAPPID","0.1");
 			}
 			
 			private function stop(e:Event):void

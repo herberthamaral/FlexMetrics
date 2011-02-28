@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" name="DeskModule" width="400" height="300">
-	
-	<mx:VBox x="{this.width/2 - vbox.width/2}" y="{this.height/2 - vbox.height/2}" id="vbox">
-		<mx:Label text="Hi guys!, I'm a module!" id="lbl"/>
-		<mx:Button id="moduleButton" label="I'm a button inside a module!"/>
-	</mx:VBox>
-		
-</mx:Module>
