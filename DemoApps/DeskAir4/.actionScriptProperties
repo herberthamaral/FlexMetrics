@@ -13,7 +13,11 @@
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
-  <applications/>
+  <applications>
+    <application path="DeskAir4.mxml">
+      <airExcludes/>
+    </application>
+  </applications>
   <modules/>
   <buildCSSFiles/>
 </actionScriptProperties>

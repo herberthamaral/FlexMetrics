@@ -1,7 +1,9 @@
 package com.DeskMetrics
 {
+	import flash.filesystem.File;
 	import flash.net.SharedObject;
 	import flash.system.Capabilities;
+	import flash.system.System;
 	
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
@@ -173,6 +175,23 @@ package com.DeskMetrics
 				obj.data.ID = MD5.hash((new Date().getTime()).toString());
 			
 			return obj.data.ID;
+		}
+		
+		private function getSystemInfo():Object
+		{
+			var obj:Object = new Object();
+			obj["osv"] = Capabilities.os;
+			obj["oslng"] = langs[Capabilities.language];
+			obj["osscn"] = Capabilities.screenResolutionX+'x'+Capabilities.screenResolutionY;
+			
+			// it can get more information if it is running under Adobe air
+			if (Capabilities.playerType == "Desktop")
+			{
+				trace(File.applicationStorageDirectory.spaceAvailable);
+				trace(flash.system.System.totalMemory);
+				
+			}
+			return obj;
 		}
 		
 	}

@@ -3,3 +3,4 @@ bin
 *.swf
 bin-debug
 *.swz
+*.air
