@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<mx:VBox>
+		<mx:HBox>
+			<mx:Image source="{deskMetricsLogo}"/>
+			<mx:VBox>
+				<mx:Spacer height="12"/>
+				<s:Label text="Demo App" fontSize="32" color="#000000"/>	
+			</mx:VBox>
+		</mx:HBox>
+		
+		<mx:HBox enabled="{!started}">
+			<s:Label text="Application ID:"/>
+			<s:TextInput id="AppID" />
+			<s:Button label="Initialize" click="init()" />
+		</mx:HBox>
+		
+		<s:Button enabled="{started}" label="Track event" click="DeskMetricsTracker.TrackEvent('DeskAir4','SampleButton')"/>
+		<s:Button enabled="{started}" label="Track valued event" click="DeskMetricsTracker.TrackEventValue('DeskAir4','ValuedEventButton','SampleValue')"/>
+		<s:Button enabled="{started}" label="Track timed event" click="DeskMetricsTracker.TrackEventPeriod('DeskAir4','TimedEventButton',10,true)"/>
+		
+		<mx:HBox>
+			<s:TextInput enabled="{started}" id="txtCustomData" text="Track this data" />
+			<s:Button enabled="{started}" label="Track custom data" click="DeskMetricsTracker.TrackCustomData('DeskAir4CustomData',txtCustomData.text)"/>
+		</mx:HBox>
+		
+		<mx:HBox>
+			<s:TextInput enabled="{started}" id="txtCustomDatar" text="Track this data" />
+			<s:Button enabled="{started}" label="Track custom data in real time" click="DeskMetricsTracker.TrackCustomDataR('DeskAir4CustomData',txtCustomData.text)"/>
+		</mx:HBox>
+
+		<mx:HBox>
+			<s:TextInput enabled="{started}" id="txtLog" text="Track this data" />
+			<s:Button enabled="{started}" label="Track log" click="DeskMetricsTracker.TrackLog(txtLog.text)"/>
+		</mx:HBox>
+		
+		<s:Button enabled="{started}" label="Track exception" click="DeskMetricsTracker.TrackException(new Error('Oops, FlexMetrics4 just trowed an error'))"/>
+		
+	</mx:VBox>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.DeskMetrics.DeskMetricsTracker;
+			
+			import mx.events.FlexEvent;
+			
+			[Bindable]
+			private var started:Boolean;
+			
+			[Embed(source="../../deskmetrics.png")]
+			[Bindable]
+			public var deskMetricsLogo:Class;
+			
+			protected function init():void
+			{
+				DeskMetricsTracker.Start(AppID.text,"4");
+				started = true;
+				NativeApplication.nativeApplication.autoExit = true;
+				NativeApplication.nativeApplication.addEventListener(Event.EXITING,stop);
+			}
+
+			private function stop(e:Event):void
+			{
+				e.preventDefault();
+				DeskMetricsTracker.Stop(function():void
+				{
+					NativeApplication.nativeApplication.removeEventListener(Event.EXITING,stop);
+					NativeApplication.nativeApplication.exit(0);
+				});
+			}
+
+		]]>
+	</fx:Script>
+</s:WindowedApplication>
